@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id             String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  supabaseUserId String   @unique @map("supabaseUser_id")
+  name           String?
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  children       Child[]
+  tasks          Task[]
+
+  @@map("users")
+}
+
+model Child {
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  userId    String   @map("user_id") @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  tasks     Task[]
+
+  @@map("children")
+}
+
+model Task {
+  id          String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title       String
+  description String?
+  frequency   Frequency
+  daysOfWeek  String[]         @map("days_of_week")
+  dueDate     DateTime?        // 締切日を追加
+  type        TaskType
+  startDate   DateTime?        @map("start_date")
+  endDate     DateTime?        @map("end_date")
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  userId      String           @map("user_id") @db.Uuid
+  childId     String           @map("child_id") @db.Uuid
+  completions TaskCompletion[]
+  child       Child            @relation(fields: [childId], references: [id])
+  user        User             @relation(fields: [userId], references: [id])
+
+  @@map("tasks")
+}
+
+model TaskCompletion {
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  taskId      String   @map("task_id") @db.Uuid
+  date        DateTime
+  isCompleted Boolean  @map("is_completed")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  task        Task     @relation(fields: [taskId], references: [id])
+
+  @@map("taskCompletions")
+}
+
+enum Frequency {
+  DAILY
+  WEEKDAY
+  WEEKEND
+  CUSTOM
+}
+
+enum TaskType {
+  GENERAL
+  HOMEWORK
+}
