@@ -14,6 +14,7 @@ model User {
   name           String?
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
+  email          String?
   children       Child[]
   tasks          Task[]
 
@@ -38,14 +39,14 @@ model Task {
   description String?
   frequency   Frequency
   daysOfWeek  String[]         @map("days_of_week")
-  dueDate     DateTime?        // 締切日を追加
-  type        TaskType
   startDate   DateTime?        @map("start_date")
   endDate     DateTime?        @map("end_date")
   createdAt   DateTime         @default(now()) @map("created_at")
   updatedAt   DateTime         @updatedAt @map("updated_at")
   userId      String           @map("user_id") @db.Uuid
   childId     String           @map("child_id") @db.Uuid
+  dueDate     DateTime?
+  type        TaskType
   completions TaskCompletion[]
   child       Child            @relation(fields: [childId], references: [id])
   user        User             @relation(fields: [userId], references: [id])
