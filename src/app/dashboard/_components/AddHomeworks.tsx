@@ -35,9 +35,15 @@ export const AddHomeworks: React.FC<Props> = ({ data, mutate }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<TaskFormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      title: "",
+      dueDate: new Date(),
+      description: "",
+    },
   });
   type TaskFormData = z.infer<typeof schema>;
 
@@ -52,6 +58,7 @@ export const AddHomeworks: React.FC<Props> = ({ data, mutate }) => {
         }
       );
       mutate();
+      reset();
       alert("宿題登録しました");
     } catch (e) {
       console.error(e);

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { PutRequest } from "@/app/_types/homework/PutRequest";
 import { Modal } from "@/app/_components/Modal";
 import { Homework } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 interface Props {
   data: DashboardResponse;
@@ -22,15 +23,15 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
   const [selectedHomework, setSelectedHomework] = useState<Homework | null>(
     null
   );
+  const router = useRouter();
   const schema = z.object({
     title: z.string().min(1, { message: "必須です" }),
     dueDate: z
       .string()
       .min(1, { message: "必須です" })
-      .refine(
-        str => dayjs(str, "YYYY-MM-DD", true).isValid(), // 厳密に日付フォーマットをチェック
-        { message: "有効な日付を入力してください" }
-      ),
+      .refine(str => dayjs(str, "YYYY-MM-DD", true).isValid(), {
+        message: "有効な日付を入力してください",
+      }),
     description: z.string().optional(),
     submitted: z.boolean().optional(),
   });
@@ -101,110 +102,122 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
       <h3 className="text-xl py-5">宿題一覧</h3>
       {data.children.map(child => {
         return (
-          <div key={child.id}>
-            <div className="text-lg border-b-2 inline px-2">{child.name}</div>
-            <div className="pt-3">
-              {data.homeworks
-                .filter(homework => homework.childId === child.id)
-                .map(homework => (
-                  <div
-                    key={homework.id}
-                    className="flex gap-3 justify-between items-center border p-2"
-                  >
-                    <div>{homework.title}</div>
-                    <div>
-                      {homework.dueDate &&
-                        dayjs(homework.dueDate).format("YYYY-MM-DD〆")}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => openEditModal(homework)}
+          <div key={child.id} className="mb-3">
+            <div
+              className="text-lg inline cursor-pointer"
+              onClick={() => router.replace(`/dashboard/child/${child.id}`)}
+            >
+              {child.name}
+            </div>
+            <div className="pt-3 flex flex-col gap-2">
+              {data.homeworks.filter(homework => homework.childId === child.id)
+                .length === 0 ? (
+                <div className="text-center text-gray-500">
+                  登録された宿題がありません
+                </div>
+              ) : (
+                data.homeworks
+                  .filter(homework => homework.childId === child.id)
+                  .map(homework => (
+                    <div
+                      key={homework.id}
+                      className="flex gap-3 justify-between items-center border p-2"
                     >
-                      <FontAwesomeIcon
-                        className="text-xl text-[#ACAAA9]"
-                        icon={faPen}
-                      />
-                    </button>
-                    <Modal
-                      isOpen={isTaskModalOpen}
-                      onClose={() => {
-                        reset();
-                        setIsTaskModalOpen(false);
-                        setSelectedHomework(null);
-                      }}
-                    >
-                      <div
-                        className="h-[70%] w-[500px] bg-white p-10 text-black rounded-md flex flex-col gap-6 shadow-lg"
-                        onClick={event => event.stopPropagation()}
-                      >
-                        <h3 className="text-xl font-bold mb-4 text-center ">
-                          宿題編集
-                        </h3>
-                        <form
-                          className="grid grid-cols-2 gap-4"
-                          onSubmit={handleSubmit(onSubmitHomework)}
-                        >
-                          <div className="flex flex-col col-span-2">
-                            <label className="font-medium">宿題</label>
-                            <input
-                              type="text"
-                              className="border rounded p-2"
-                              placeholder="内容を入力"
-                              {...register("title")}
-                            />
-                            {errors.title && (
-                              <p className="text-red-600 text-sm mt-1">
-                                {errors.title.message}
-                              </p>
-                            )}
-                          </div>
-                          <div className="flex flex-col col-span-2">
-                            <label className="font-medium">詳細</label>
-                            <input
-                              type="text"
-                              className="border rounded p-2"
-                              placeholder="詳細を入力"
-                              {...register("description")}
-                            />
-                            {errors.description && (
-                              <p className="text-red-600 text-sm mt-1">
-                                {errors.description.message}
-                              </p>
-                            )}
-                          </div>
-                          <div className="flex flex-col">
-                            <label className="font-medium">提出日:</label>
-                            <input
-                              type="date"
-                              className="border rounded p-2"
-                              {...register("dueDate")}
-                            />
-                            {errors.dueDate && (
-                              <p className="text-red-600 text-sm mt-1">
-                                {errors.dueDate.message}
-                              </p>
-                            )}
-                          </div>
-                          <div className="col-span-2 mt-4 flex flex-col gap-5">
-                            <button
-                              type="submit"
-                              className="w-full bg-blue-600 text-white rounded py-2 font-semibold hover:bg-blue-700 transition"
-                            >
-                              登録
-                            </button>
-                            <button
-                              type="button"
-                              className="w-full bg-gray-600 text-white rounded py-2 font-semibold hover:bg-blue-700 transition"
-                              onClick={deleteHomework}
-                            >
-                              削除
-                            </button>
-                          </div>
-                        </form>
+                      <div className="w-2/3">{homework.title}</div>
+                      <div>
+                        {homework.dueDate &&
+                          dayjs(homework.dueDate).format("YYYY-MM-DD〆")}
                       </div>
-                    </Modal>
-                  </div>
-                ))}
+                      <button
+                        type="button"
+                        onClick={() => openEditModal(homework)}
+                      >
+                        <FontAwesomeIcon
+                          className="text-xl text-[#ACAAA9]"
+                          icon={faPen}
+                        />
+                      </button>
+                      <Modal
+                        isOpen={isTaskModalOpen}
+                        onClose={() => {
+                          reset();
+                          setIsTaskModalOpen(false);
+                          setSelectedHomework(null);
+                        }}
+                      >
+                        <div
+                          className="h-[70%] w-[500px] bg-white p-10 text-black rounded-md flex flex-col gap-6 shadow-lg"
+                          onClick={event => event.stopPropagation()}
+                        >
+                          <h3 className="text-xl font-bold mb-4 text-center ">
+                            宿題編集
+                          </h3>
+                          <form
+                            className="grid grid-cols-2 gap-4"
+                            onSubmit={handleSubmit(onSubmitHomework)}
+                          >
+                            <div className="flex flex-col col-span-2">
+                              <label className="font-medium">宿題</label>
+                              <input
+                                type="text"
+                                className="border rounded p-2"
+                                placeholder="内容を入力"
+                                {...register("title")}
+                              />
+                              {errors.title && (
+                                <p className="text-red-600 text-sm mt-1">
+                                  {errors.title.message}
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex flex-col col-span-2">
+                              <label className="font-medium">詳細</label>
+                              <input
+                                type="text"
+                                className="border rounded p-2"
+                                placeholder="詳細を入力"
+                                {...register("description")}
+                              />
+                              {errors.description && (
+                                <p className="text-red-600 text-sm mt-1">
+                                  {errors.description.message}
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex flex-col">
+                              <label className="font-medium">提出日:</label>
+                              <input
+                                type="date"
+                                className="border rounded p-2"
+                                {...register("dueDate")}
+                              />
+                              {errors.dueDate && (
+                                <p className="text-red-600 text-sm mt-1">
+                                  {errors.dueDate.message}
+                                </p>
+                              )}
+                            </div>
+                            <div className="col-span-2 mt-4 flex flex-col gap-5">
+                              <button
+                                type="submit"
+                                className="w-full bg-blue-600 text-white rounded py-2 font-semibold hover:bg-blue-700 transition"
+                              >
+                                登録
+                              </button>
+                              <button
+                                type="button"
+                                className="w-full bg-gray-600 text-white rounded py-2 font-semibold hover:bg-blue-700 transition"
+                                onClick={deleteHomework}
+                              >
+                                削除
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </Modal>
+                    </div>
+                  ))
+              )}
             </div>
           </div>
         );

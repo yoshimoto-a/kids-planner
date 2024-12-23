@@ -4,6 +4,8 @@ import { PostRequest } from "@/app/_types/child/PostRequest";
 import { PutRequest } from "@/app/_types/child/PutRequest";
 import { DashboardResponse } from "@/app/_types/Dashboard/Responase";
 import { api } from "@/app/_utils/api";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { KeyedMutator } from "swr";
 interface Props {
@@ -24,26 +26,26 @@ export const ChildrenSection: React.FC<Props> = ({ data, mutate }) => {
       await api.post<PostRequest, { message: string }>("/api/children", {
         name,
       });
-      setName("");
       mutate();
-      setIsEditModalOpen(false);
     } catch (e) {
       console.error(e);
       alert("登録に失敗しました");
     }
+    setName("");
+    setIsAddModalOpen(false);
   };
   const update = async (id: string) => {
     try {
       await api.put<PutRequest, { message: string }>(`/api/children/${id}`, {
         name,
       });
-      setName("");
       mutate();
       setIsEditModalOpen(false);
     } catch (e) {
       console.error(e);
       alert("更新に失敗しました");
     }
+    setName("");
   };
   const del = async (id: string) => {
     try {
@@ -64,7 +66,6 @@ export const ChildrenSection: React.FC<Props> = ({ data, mutate }) => {
           type="button"
           variant="bg-gray"
           onClick={() => {
-            /**子供追加モーダル */
             setIsAddModalOpen(true);
           }}
         >
@@ -93,11 +94,16 @@ export const ChildrenSection: React.FC<Props> = ({ data, mutate }) => {
         {data.children.map(child => (
           <div key={child.id}>
             <div
-              className="shadow-sm w-full p-2 border cursor-pointer"
+              className="flex justify-between shadow-sm w-full p-2 border cursor-pointer"
               onClick={() => handleOpen(child.name)}
             >
-              {child.name}
+              <div>{child.name}</div>
+              <FontAwesomeIcon
+                className="text-xl text-[#ACAAA9]"
+                icon={faPen}
+              />
             </div>
+
             <Modal
               onClose={() => setIsEditModalOpen(false)}
               isOpen={isEditModalOpen}

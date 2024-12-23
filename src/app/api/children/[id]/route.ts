@@ -4,6 +4,7 @@ import { buildError } from "@/app/api/_utils/buildError";
 import { getCurrentUser } from "../../_utils/getCurrentUser";
 import { PutRequest } from "@/app/_types/child/PutRequest";
 import { PostRequest } from "@/app/_types/homework/PostRequest";
+import { IndexResponse } from "@/app/_types/homework/IndexResponse";
 
 interface Props {
   params: Promise<{
@@ -82,6 +83,34 @@ export const POST = async (request: NextRequest, { params }: Props) => {
     return NextResponse.json(
       {
         message: "success!",
+      },
+      { status: 200 }
+    );
+  } catch (e) {
+    return buildError(e);
+  }
+};
+
+export const GET = async (request: NextRequest, { params }: Props) => {
+  const prisma = await buildPrisma();
+  const { id } = await params;
+  try {
+    const user = await getCurrentUser({ request });
+
+    const homeworks = await prisma.homework.findMany({
+      where: {
+        userId: user.id,
+        childId: id,
+      },
+      include: {
+        child: true,
+      },
+    });
+
+    return NextResponse.json<IndexResponse>(
+      {
+        child: homeworks[0].child,
+        homeworks,
       },
       { status: 200 }
     );
