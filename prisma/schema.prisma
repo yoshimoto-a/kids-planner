@@ -17,6 +17,7 @@ model User {
   email          String?
   children       Child[]
   tasks          Task[]
+  homeworks Homework[]
 
   @@map("users")
 }
@@ -29,15 +30,32 @@ model Child {
   userId    String   @map("user_id") @db.Uuid
   user      User     @relation(fields: [userId], references: [id])
   tasks     Task[]
+  homeworks Homework[]
 
   @@map("children")
+}
+
+model Homework {
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  title       String
+  description String?
+  dueDate     DateTime @map("due_date")
+  submitted   Boolean  @default(false) @map("submitted")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  userId      String   @map("user_id") @db.Uuid
+  childId     String   @map("child_id") @db.Uuid
+  child       Child    @relation(fields: [childId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@map("homeworks")
 }
 
 model Task {
   id          String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   title       String
   description String?
-  frequency   Frequency
+  frequency   Frequency?
   daysOfWeek  String[]         @map("days_of_week")
   startDate   DateTime?        @map("start_date")
   endDate     DateTime?        @map("end_date")
