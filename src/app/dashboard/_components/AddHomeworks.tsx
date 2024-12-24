@@ -9,6 +9,7 @@ import { DashboardResponse } from "@/app/_types/Dashboard/Responase";
 import { Modal } from "@/app/_components/Modal";
 import { Button } from "@/app/_components/Button";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface Props {
   data: DashboardResponse;
@@ -59,10 +60,10 @@ export const AddHomeworks: React.FC<Props> = ({ data, mutate }) => {
       );
       mutate();
       reset();
-      alert("宿題登録しました");
+      toast.success("宿題登録しました");
     } catch (e) {
       console.error(e);
-      alert("宿題登録に失敗しました");
+      toast.error("宿題登録に失敗しました");
     }
     setIsTaskModalOpen(false);
     setSelectedChildId(null);

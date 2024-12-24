@@ -45,6 +45,12 @@ export const DELETE = async (request: NextRequest, { params }: Props) => {
     await getCurrentUser({ request });
     const { id } = await params;
 
+    await prisma.homework.deleteMany({
+      where: {
+        childId: id,
+      },
+    });
+
     await prisma.child.delete({
       where: {
         id,
@@ -105,6 +111,7 @@ export const GET = async (request: NextRequest, { params }: Props) => {
       include: {
         child: true,
       },
+      orderBy: [{ dueDate: "asc" }, { createdAt: "asc" }],
     });
 
     return NextResponse.json<IndexResponse>(

@@ -13,6 +13,9 @@ import { PutRequest } from "@/app/_types/homework/PutRequest";
 import { Modal } from "@/app/_components/Modal";
 import { Homework } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { Button } from "@/app/_components/Button";
+import { updateSubmitted } from "../_utils/updateSubmitted";
+import toast from "react-hot-toast";
 
 interface Props {
   data: DashboardResponse;
@@ -72,14 +75,13 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
           dueDate: new Date(data.dueDate),
           title: data.title,
           description: data.description,
-          submitted: data.submitted || false,
         }
       );
       mutate();
-      alert("宿題更新しました");
+      toast.success("宿題更新しました");
     } catch (e) {
       console.error(e);
-      alert("更新に失敗しました");
+      toast.error("更新に失敗しました");
     }
     setIsTaskModalOpen(false);
     setSelectedHomework(null);
@@ -89,14 +91,15 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
     try {
       await api.del(`/api/homework/${selectedHomework.id}`);
       mutate();
-      alert("削除しました");
+      toast.success("削除しました");
     } catch (e) {
       console.error(e);
-      alert("削除に失敗しました");
+      toast.error("削除に失敗しました");
     }
     setIsTaskModalOpen(false);
     setSelectedHomework(null);
   };
+
   return (
     <div>
       <h3 className="text-xl py-5">宿題一覧</h3>
@@ -123,7 +126,21 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
                       key={homework.id}
                       className="flex gap-3 justify-between items-center border p-2"
                     >
-                      <div className="w-2/3">{homework.title}</div>
+                      <Button
+                        variant="bg-blue"
+                        type="button"
+                        onClick={() =>
+                          updateSubmitted<DashboardResponse>({
+                            id: homework.id,
+                            submittedStatus: homework.submitted,
+                            mutate,
+                          })
+                        }
+                      >
+                        {homework.submitted ? "済" : "未"}
+                      </Button>
+
+                      <div className="w-1/2">{homework.title}</div>
                       <div>
                         {homework.dueDate &&
                           dayjs(homework.dueDate).format("YYYY-MM-DD〆")}
@@ -140,7 +157,6 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
                       <Modal
                         isOpen={isTaskModalOpen}
                         onClose={() => {
-                          reset();
                           setIsTaskModalOpen(false);
                           setSelectedHomework(null);
                         }}

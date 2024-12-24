@@ -28,7 +28,7 @@ model Child {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   userId    String   @map("user_id") @db.Uuid
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id] ,onDelete: Cascade)
   tasks     Task[]
   homeworks Homework[]
 
@@ -45,8 +45,8 @@ model Homework {
   updatedAt   DateTime @updatedAt @map("updated_at")
   userId      String   @map("user_id") @db.Uuid
   childId     String   @map("child_id") @db.Uuid
-  child       Child    @relation(fields: [childId], references: [id])
-  user        User     @relation(fields: [userId], references: [id])
+  child       Child    @relation(fields: [childId], references: [id],onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id],onDelete: Cascade)
 
   @@map("homeworks")
 }
@@ -66,8 +66,8 @@ model Task {
   dueDate     DateTime?
   type        TaskType
   completions TaskCompletion[]
-  child       Child            @relation(fields: [childId], references: [id])
-  user        User             @relation(fields: [userId], references: [id])
+  child       Child            @relation(fields: [childId], references: [id],onDelete: Cascade)
+  user        User             @relation(fields: [userId], references: [id],onDelete: Cascade)
 
   @@map("tasks")
 }
@@ -79,7 +79,7 @@ model TaskCompletion {
   isCompleted Boolean  @map("is_completed")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
-  task        Task     @relation(fields: [taskId], references: [id])
+  task        Task     @relation(fields: [taskId], references: [id],onDelete: Cascade)
 
   @@map("taskCompletions")
 }

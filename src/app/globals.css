@@ -2,20 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* 通常表示では非表示 */
+.print-only {
+  display: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* 印刷時に表示 */
+@media print {
+  .print-only {
+    display: block !important;
   }
-}
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  /* 印刷専用のスタイル */
+  body {
+    background-color: white;
+    color: black;
+    margin: 0;
+    padding: 0;
+  }
 }

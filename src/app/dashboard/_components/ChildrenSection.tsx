@@ -8,6 +8,7 @@ import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { KeyedMutator } from "swr";
+import toast from "react-hot-toast";
 interface Props {
   data: DashboardResponse;
   mutate: KeyedMutator<DashboardResponse | undefined>;
@@ -15,47 +16,48 @@ interface Props {
 export const ChildrenSection: React.FC<Props> = ({ data, mutate }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [name, setName] = useState("");
+  const [inputName, setInputName] = useState("");
 
   const handleOpen = (name: string) => {
-    setName(name);
+    setInputName(name);
     setIsEditModalOpen(true);
   };
   const create = async () => {
     try {
       await api.post<PostRequest, { message: string }>("/api/children", {
-        name,
+        name: inputName,
       });
       mutate();
     } catch (e) {
       console.error(e);
-      alert("登録に失敗しました");
+      toast.success("登録に失敗しました");
     }
-    setName("");
+    setInputName("");
     setIsAddModalOpen(false);
   };
   const update = async (id: string) => {
     try {
       await api.put<PutRequest, { message: string }>(`/api/children/${id}`, {
-        name,
+        name: inputName,
       });
       mutate();
       setIsEditModalOpen(false);
     } catch (e) {
       console.error(e);
-      alert("更新に失敗しました");
+      toast.error("更新に失敗しました");
     }
-    setName("");
+    setInputName("");
   };
   const del = async (id: string) => {
     try {
       await api.del(`/api/children/${id}`);
-      setName("");
+      setInputName("");
       mutate();
       setIsEditModalOpen(false);
+      toast.success("削除しました");
     } catch (e) {
       console.error(e);
-      alert("削除に失敗しました");
+      toast.error("削除に失敗しました");
     }
   };
   return (
@@ -81,8 +83,8 @@ export const ChildrenSection: React.FC<Props> = ({ data, mutate }) => {
               type="text"
               placeholder="名前"
               className="p-2 border rounded-sm w-full"
-              value={name}
-              onChange={e => setName(e.target.value)}
+              value={inputName}
+              onChange={e => setInputName(e.target.value)}
             />
             <Button type="button" variant="bg-blue" onClick={create}>
               登録
@@ -117,8 +119,8 @@ export const ChildrenSection: React.FC<Props> = ({ data, mutate }) => {
                   type="text"
                   placeholder="名前"
                   className="p-2 border rounded-sm w-full"
-                  value={name}
-                  onChange={e => setName(e.target.value)}
+                  value={inputName}
+                  onChange={e => setInputName(e.target.value)}
                 />
                 <Button
                   type="button"
