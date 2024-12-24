@@ -9,6 +9,7 @@ import { DashboardResponse } from "@/app/_types/Dashboard/Responase";
 import { Modal } from "@/app/_components/Modal";
 import { Button } from "@/app/_components/Button";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface Props {
   data: DashboardResponse;
@@ -35,9 +36,15 @@ export const AddHomeworks: React.FC<Props> = ({ data, mutate }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<TaskFormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      title: "",
+      dueDate: new Date(),
+      description: "",
+    },
   });
   type TaskFormData = z.infer<typeof schema>;
 
@@ -52,10 +59,11 @@ export const AddHomeworks: React.FC<Props> = ({ data, mutate }) => {
         }
       );
       mutate();
-      alert("宿題登録しました");
+      reset();
+      toast.success("宿題登録しました");
     } catch (e) {
       console.error(e);
-      alert("宿題登録に失敗しました");
+      toast.error("宿題登録に失敗しました");
     }
     setIsTaskModalOpen(false);
     setSelectedChildId(null);
