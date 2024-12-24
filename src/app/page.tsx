@@ -15,6 +15,9 @@ export default function Home() {
   }, [session, isLoading, router]);
 
   const signIn = async () => {
+    console.log(
+      `${process.env.NEXT_PUBLIC_APP_BASE_URL}/oauth/callback/google`
+    );
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
