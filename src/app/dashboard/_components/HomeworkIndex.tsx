@@ -102,7 +102,6 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
 
   return (
     <div>
-      <h3 className="text-xl py-5">宿題一覧</h3>
       {data.children.map(child => {
         return (
           <div key={child.id} className="mb-3">
@@ -127,7 +126,7 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
                       className="flex gap-3 justify-between items-center border p-2"
                     >
                       <Button
-                        variant="bg-blue"
+                        variant={homework.submitted ? "bg-gray" : "bg-blue"}
                         type="button"
                         onClick={() =>
                           updateSubmitted<DashboardResponse>({
@@ -143,7 +142,7 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
                       <div className="w-1/2">{homework.title}</div>
                       <div>
                         {homework.dueDate &&
-                          dayjs(homework.dueDate).format("YYYY-MM-DD〆")}
+                          dayjs(homework.dueDate).format("YYYY-MM-DD")}
                       </div>
                       <button
                         type="button"
