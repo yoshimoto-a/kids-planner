@@ -9,7 +9,32 @@ interface Props {
   mutate: KeyedMutator<IndexResponse | undefined>;
 }
 export const HomeworkItem: React.FC<Props> = ({ homework, mutate }) => {
-  const { reward } = useReward(`rewardId`, "confetti");
+  const rewardId = `reward-${homework.id}`;
+  const { reward } = useReward(rewardId, "emoji", {
+    emoji: [
+      "🎉",
+      "✨",
+      "🌟",
+      "🎈",
+      "🎂",
+      "🍭",
+      "🍬",
+      "🦄",
+      "🌈",
+      "🍓",
+      "🐶",
+      "🐱",
+      "🐰",
+      "🦊",
+      "🐻",
+      "🐼",
+      "🐥",
+      "🐸",
+      "🌸",
+    ],
+    elementCount: 100, // エフェクト量を増やす
+    spread: 100, // 拡散範囲を広げる
+  });
   return (
     <div
       key={homework.id}
@@ -20,7 +45,7 @@ export const HomeworkItem: React.FC<Props> = ({ homework, mutate }) => {
       <div className="pt-3 flex flex-col gap-1">
         <div>{homework.title}</div>
         <div className="text-sm">{homework.description}</div>
-        <span id="rewardId" />
+        <span id={rewardId} className="block mx-auto" />
       </div>
       <div className={`pt-3 flex flex-col items-center gap-2 `}>
         <button
