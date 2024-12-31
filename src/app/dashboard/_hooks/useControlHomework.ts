@@ -1,0 +1,104 @@
+"use client";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "@/app/_utils/api";
+import dayjs from "dayjs";
+import { useState } from "react";
+import { PutRequest } from "@/app/_types/homework/PutRequest";
+import { Homework } from "@prisma/client";
+import toast from "react-hot-toast";
+import { KeyedMutator } from "swr";
+import { DashboardResponse } from "@/app/_types/Dashboard/Responase";
+
+export const useControlHomework = (
+  mutate: KeyedMutator<DashboardResponse | undefined>
+) => {
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [selectedHomework, setSelectedHomework] = useState<Homework | null>(
+    null
+  );
+  const schema = z.object({
+    title: z.string().min(1, { message: "必須です" }),
+    dueDate: z
+      .string()
+      .min(1, { message: "必須です" })
+      .refine(str => dayjs(str, "YYYY-MM-DD", true).isValid(), {
+        message: "有効な日付を入力してください",
+      }),
+    description: z.string().optional(),
+    submitted: z.boolean().optional(),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<HomeworkFormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      title: "",
+      dueDate: "",
+      description: "",
+      submitted: false,
+    },
+  });
+  type HomeworkFormData = z.infer<typeof schema>;
+
+  const openEditModal = (homework: Homework) => {
+    setSelectedHomework(homework);
+    reset({
+      title: homework.title,
+      dueDate: dayjs(homework.dueDate).format("YYYY-MM-DD"),
+      description: homework.description || "",
+      submitted: homework.submitted || false,
+    });
+    setIsTaskModalOpen(true);
+  };
+
+  const onSubmitHomework = async (data: HomeworkFormData) => {
+    if (!selectedHomework) return;
+    try {
+      await api.put<PutRequest, { message: string }>(
+        `/api/homework/${selectedHomework.id}`,
+        {
+          dueDate: new Date(data.dueDate),
+          title: data.title,
+          description: data.description,
+        }
+      );
+      mutate();
+      toast.success("宿題更新しました");
+    } catch (e) {
+      console.error(e);
+      toast.error("更新に失敗しました");
+    }
+    setIsTaskModalOpen(false);
+    setSelectedHomework(null);
+  };
+  const deleteHomework = async () => {
+    if (!selectedHomework) return;
+    try {
+      await api.del(`/api/homework/${selectedHomework.id}`);
+      mutate();
+      toast.success("削除しました");
+    } catch (e) {
+      console.error(e);
+      toast.error("削除に失敗しました");
+    }
+    setIsTaskModalOpen(false);
+    setSelectedHomework(null);
+  };
+
+  return {
+    openEditModal,
+    deleteHomework,
+    onSubmitHomework: handleSubmit(onSubmitHomework),
+    register,
+    errors,
+    isTaskModalOpen,
+    setIsTaskModalOpen,
+    setSelectedHomework,
+  };
+};

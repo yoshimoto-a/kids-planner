@@ -9,7 +9,7 @@ export const updateSubmitted = async <T>({
 }: {
   id: string;
   submittedStatus: boolean;
-  mutate: KeyedMutator<T | undefined>;
+  mutate: KeyedMutator<T>;
 }) => {
   try {
     await api.put<PutRequest, { message: string }>(
