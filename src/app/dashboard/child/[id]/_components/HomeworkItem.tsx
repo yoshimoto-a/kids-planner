@@ -27,7 +27,7 @@ export const HomeworkItem: React.FC<Props> = ({ homework, mutate }) => {
           type="button"
           className="rounded-full border w-32 h-32 flex justify-center items-center"
           onClick={() => {
-            updateSubmitted<IndexResponse>({
+            updateSubmitted<IndexResponse | undefined>({
               id: homework.id,
               submittedStatus: homework.submitted,
               mutate,
