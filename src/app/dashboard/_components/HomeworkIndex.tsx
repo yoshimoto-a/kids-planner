@@ -2,9 +2,12 @@
 import { DashboardResponse } from "@/app/_types/Dashboard/Responase";
 import { KeyedMutator } from "swr";
 import { Modal } from "@/app/_components/Modal";
-import { useRouter } from "next/navigation";
 import { useControlHomework } from "../_hooks/useControlHomework";
 import { HomeworkTable } from "./HomeworkTable";
+import { AddHomeworks } from "./AddHomeworks";
+import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 interface Props {
   data: DashboardResponse;
   mutate: KeyedMutator<DashboardResponse | undefined>;
@@ -20,18 +23,25 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
     setIsTaskModalOpen,
     setSelectedHomework,
   } = useControlHomework(mutate);
-  const router = useRouter();
 
   return (
     <div>
       {data.children.map(child => {
         return (
           <div key={child.id} className="mb-3">
-            <div
-              className="text-lg inline cursor-pointer"
-              onClick={() => router.replace(`/dashboard/child/${child.id}`)}
-            >
-              {child.name}
+            <div className="flex justify-between items-center">
+              <Link
+                href={`/dashboard/child/${child.id}`}
+                className="text-lg inline cursor-pointer"
+                target="_blank"
+              >
+                {child.name}
+                <FontAwesomeIcon
+                  className="text-sm pl-2"
+                  icon={faArrowUpRightFromSquare}
+                />
+              </Link>
+              <AddHomeworks childId={child.id} mutate={mutate} />
             </div>
             <div className="pt-3 flex flex-col gap-2">
               {data.homeworks.filter(homework => homework.childId === child.id)
