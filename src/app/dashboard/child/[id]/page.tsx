@@ -14,12 +14,12 @@ export default function ChildHomework() {
   if (error) return <div className="text-center pt-20">エラー発生</div>;
   return (
     <div className="max-w-[480px] mx-auto pt-[72px] p-2">
-      <div className="flex justify-between">
+      <div className="flex justify-between pb-2">
         <h2 className="text-2xl py-5">{data.child.name}</h2>
         <div className="py-4">
           <Button
             type="button"
-            variant="bg-blue"
+            variant="bg-gray"
             onClick={() => reactToPrintFn()}
           >
             印刷する

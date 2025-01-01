@@ -17,9 +17,9 @@ export const Header: React.FC = () => {
     }
   };
   return (
-    <header className="fixed top-0 z-10  h-[72px] w-screen bg-white/90 p-6 shadow-sm">
+    <header className="fixed top-0 z-10  h-[60px] w-screen bg-accentBeige/90 p-2 shadow-sm text-black">
       <div className="max-w-[480px] flex items-center justify-between mx-auto">
-        <Link className="font-bold" href={"/dashboard"}>
+        <Link className="font-semibold" href={"/dashboard"}>
           kids planner
         </Link>
         <Button type="button" onClick={logout} variant="text-black">

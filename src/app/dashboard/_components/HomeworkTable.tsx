@@ -25,12 +25,12 @@ export const HomeworkTable: React.FC<Props> = ({
   const columnHelper = createColumnHelper<Homework>();
   const columns = [
     columnHelper.accessor("submitted", {
-      header: "状況",
+      header: "進捗",
       cell: info => {
         const submitted = info.getValue();
         return (
           <Button
-            variant={submitted ? "bg-gray" : "bg-blue"}
+            variant={submitted ? "bg-gray" : "bg-beige"}
             type="button"
             onClick={e => {
               e.stopPropagation();
@@ -64,7 +64,7 @@ export const HomeworkTable: React.FC<Props> = ({
     <table>
       <thead>
         {table.getHeaderGroups().map(headerGroup => (
-          <tr key={headerGroup.id} className="bg-gray-300">
+          <tr key={headerGroup.id} className="bg-accentBeige">
             {headerGroup.headers.map(header => {
               const headerContent = flexRender(
                 header.column.columnDef.header,

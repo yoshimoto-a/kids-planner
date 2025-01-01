@@ -86,7 +86,7 @@ export const ChildrenSection: React.FC<Props> = ({ data, mutate }) => {
               value={inputName}
               onChange={e => setInputName(e.target.value)}
             />
-            <Button type="button" variant="bg-blue" onClick={create}>
+            <Button type="button" variant="bg-beige" onClick={create}>
               登録
             </Button>
           </div>
@@ -124,7 +124,7 @@ export const ChildrenSection: React.FC<Props> = ({ data, mutate }) => {
                 />
                 <Button
                   type="button"
-                  variant="bg-blue"
+                  variant="bg-beige"
                   onClick={() => update(child.id)}
                 >
                   登録
