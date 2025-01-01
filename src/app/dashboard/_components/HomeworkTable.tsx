@@ -64,7 +64,7 @@ export const HomeworkTable: React.FC<Props> = ({
     <table>
       <thead>
         {table.getHeaderGroups().map(headerGroup => (
-          <tr key={headerGroup.id}>
+          <tr key={headerGroup.id} className="bg-gray-300">
             {headerGroup.headers.map(header => {
               const headerContent = flexRender(
                 header.column.columnDef.header,
@@ -74,7 +74,7 @@ export const HomeworkTable: React.FC<Props> = ({
                 <th
                   key={header.id}
                   className={`p-2 text-left font-normal text-xs ${
-                    headerContent === "宿題" ? "w-2/3" : "w-auto"
+                    headerContent === "宿題" ? "w-3/5" : "w-auto"
                   }`}
                 >
                   {headerContent}
