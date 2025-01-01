@@ -23,7 +23,7 @@ export const Modal: FC<Props> = ({
       contentLabel="Modal"
       closeTimeoutMS={300}
       ariaHideApp={false}
-      className={`relative z-[99] h-screen w-screen bg-black/80`}
+      className={`relative z-[99] h-screen w-screen bg-black/80 px-2`}
       overlayClassName="fixed inset-0 bg-black_main bg-opacity-60 flex items-center justify-center z-[99]"
     >
       <div

@@ -96,7 +96,7 @@ export const ChildrenSection: React.FC<Props> = ({ data, mutate }) => {
         {data.children.map(child => (
           <div key={child.id}>
             <div
-              className="flex justify-between shadow-sm w-full p-2 border cursor-pointer"
+              className="flex justify-between w-full p-2 cursor-pointer"
               onClick={() => handleOpen(child.name)}
             >
               <div>{child.name}</div>
