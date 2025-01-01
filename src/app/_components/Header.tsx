@@ -17,7 +17,7 @@ export const Header: React.FC = () => {
     }
   };
   return (
-    <header className="fixed top-0 z-10  h-[72px] w-screen bg-white/50 p-6 shadow-sm">
+    <header className="fixed top-0 z-10  h-[72px] w-screen bg-white/90 p-6 shadow-sm">
       <div className="max-w-[480px] flex items-center justify-between mx-auto">
         <Link className="font-bold" href={"/dashboard"}>
           kids planner
