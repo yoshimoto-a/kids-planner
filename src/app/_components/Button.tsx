@@ -6,7 +6,7 @@ type Variant =
   | "text-black"
   | "text-white"
   | "bg-gray"
-  | "bg-blue";
+  | "bg-beige";
 
 interface Props extends Omit<ComponentPropsWithRef<"button">, "className"> {
   variant: Variant;
@@ -26,9 +26,9 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
         case "text-white":
           return "text-white";
         case "bg-gray":
-          return "bg-[#777777] text-white";
-        case "bg-blue":
-          return "bg-[#4E89FF] text-white";
+          return "bg-gray text-white";
+        case "bg-beige":
+          return "bg-beige text-white";
         default:
           return "";
       }

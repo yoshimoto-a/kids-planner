@@ -31,7 +31,7 @@ export default function Home() {
 
   return (
     <div className="flex h-screen items-center justify-center gap-5">
-      <Button type="button" onClick={signIn} variant="bg-blue">
+      <Button type="button" onClick={signIn} variant="bg-beige">
         Googleアカウントでログイン
       </Button>
     </div>
