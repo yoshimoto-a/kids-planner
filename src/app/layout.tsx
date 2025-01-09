@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Zen_Maru_Gothic, Kosugi_Maru } from "next/font/google";
 import "./globals.css";
-
+import { Header } from "./_components/Header";
 const zenMaruGothic = Zen_Maru_Gothic({
   variable: "--font-zen-maru-gothic",
   subsets: ["latin"],
@@ -29,6 +29,7 @@ export default function RootLayout({
       <body
         className={`${zenMaruGothic.variable} ${kosugiMaru.variable} antialiased bg-ivory text-black`}
       >
+        <Header />
         {children}
       </body>
     </html>
