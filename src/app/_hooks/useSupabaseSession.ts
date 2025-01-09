@@ -19,6 +19,18 @@ export const useSupabaseSession = () => {
       setIsLoading(false);
     };
     fetcher();
+    // 認証状態の変更を監視
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setToken(session?.access_token || null);
+      }
+    );
+
+    //クリーンアップ
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   return { session, token, isLoading };

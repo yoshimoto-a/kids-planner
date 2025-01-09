@@ -1,14 +1,10 @@
-import { Header } from "../_components/Header";
-
+"use client";
+// import { useRouteGuard } from "../_hooks/useRouteGuard";
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <Header />
-      {children}
-    </>
-  );
+  // useRouteGuard();
+  return <div className="">{children}</div>;
 }
