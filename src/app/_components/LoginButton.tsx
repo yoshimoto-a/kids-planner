@@ -8,9 +8,6 @@ interface Props {
 
 export const LoginButton: React.FC<Props> = ({ children }) => {
   const signIn = async () => {
-    console.log(
-      `リダイレクト先：${process.env.NEXT_PUBLIC_APP_BASE_URL}/oauth/callback/google`
-    );
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
