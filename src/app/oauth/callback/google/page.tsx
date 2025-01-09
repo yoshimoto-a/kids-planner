@@ -32,5 +32,5 @@ export default function OAuthCallback() {
     postUser();
   }, [accessToken, router]);
 
-  return <div className="text-center">読込み中...</div>;
+  return <div className="text-center pt-30">読込み中...</div>;
 }
