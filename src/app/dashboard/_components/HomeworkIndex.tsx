@@ -8,6 +8,7 @@ import { AddHomeworks } from "./AddHomeworks";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { Button } from "@/app/_components/Button";
 interface Props {
   data: DashboardResponse;
   mutate: KeyedMutator<DashboardResponse | undefined>;
@@ -118,19 +119,16 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
                           )}
                         </div>
                         <div className="col-span-2 mt-4 flex flex-col gap-5">
-                          <button
-                            type="submit"
-                            className="w-full bg-blue-600 text-white rounded py-2 font-semibold hover:bg-blue-700 transition"
-                          >
+                          <Button type="submit" variant="bg-beige">
                             登録
-                          </button>
-                          <button
+                          </Button>
+                          <Button
                             type="button"
-                            className="w-full bg-gray-600 text-white rounded py-2 font-semibold hover:bg-blue-700 transition"
+                            variant="bg-gray"
                             onClick={deleteHomework}
                           >
                             削除
-                          </button>
+                          </Button>
                         </div>
                       </form>
                     </div>

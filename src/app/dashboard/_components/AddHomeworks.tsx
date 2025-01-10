@@ -134,13 +134,10 @@ export const AddHomeworks: React.FC<Props> = ({ childId, mutate }) => {
                 </p>
               )}
             </div>
-            <div className="col-span-2 mt-4">
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white rounded py-2 font-semibold hover:bg-blue-700 transition"
-              >
+            <div className="col-span-2 mt-4 text-center">
+              <Button type="submit" variant="bg-beige">
                 登録
-              </button>
+              </Button>
             </div>
           </form>
         </div>
