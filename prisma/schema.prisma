@@ -16,7 +16,7 @@ model User {
   updatedAt      DateTime @updatedAt @map("updated_at")
   email          String?
   children       Child[]
-  tasks          Task[]
+  longVacations  LongVacation[]
   homeworks Homework[]
 
   @@map("users")
@@ -29,7 +29,7 @@ model Child {
   updatedAt DateTime @updatedAt @map("updated_at")
   userId    String   @map("user_id") @db.Uuid
   user      User     @relation(fields: [userId], references: [id] ,onDelete: Cascade)
-  tasks     Task[]
+  longVacations     LongVacation[]
   homeworks Homework[]
 
   @@map("children")
@@ -51,37 +51,21 @@ model Homework {
   @@map("homeworks")
 }
 
-model Task {
+model LongVacation {
   id          String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   title       String
-  description String?
-  frequency   Frequency?
-  daysOfWeek  String[]         @map("days_of_week")
-  startDate   DateTime?        @map("start_date")
-  endDate     DateTime?        @map("end_date")
+  startDate   DateTime        @map("start_date")
+  endDate     DateTime        @map("end_date")
   createdAt   DateTime         @default(now()) @map("created_at")
   updatedAt   DateTime         @updatedAt @map("updated_at")
   userId      String           @map("user_id") @db.Uuid
   childId     String           @map("child_id") @db.Uuid
-  dueDate     DateTime?
-  type        TaskType
-  completions TaskCompletion[]
+  schoolDay   DateTime?
+  isActive    Boolean
   child       Child            @relation(fields: [childId], references: [id],onDelete: Cascade)
   user        User             @relation(fields: [userId], references: [id],onDelete: Cascade)
 
-  @@map("tasks")
-}
-
-model TaskCompletion {
-  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  taskId      String   @map("task_id") @db.Uuid
-  date        DateTime
-  isCompleted Boolean  @map("is_completed")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  task        Task     @relation(fields: [taskId], references: [id],onDelete: Cascade)
-
-  @@map("taskCompletions")
+  @@map("longVacations")
 }
 
 enum Frequency {
@@ -89,9 +73,4 @@ enum Frequency {
   WEEKDAY
   WEEKEND
   CUSTOM
-}
-
-enum TaskType {
-  GENERAL
-  HOMEWORK
 }
