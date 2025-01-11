@@ -32,7 +32,7 @@ export const HomeworkIndex: React.FC<Props> = ({ data, mutate }) => {
           <div key={child.id} className="mb-3">
             <div className="flex justify-between items-center">
               <Link
-                href={`/dashboard/child/${child.id}`}
+                href={`/child/${child.id}`}
                 className="text-lg inline cursor-pointer"
                 target="_blank"
               >

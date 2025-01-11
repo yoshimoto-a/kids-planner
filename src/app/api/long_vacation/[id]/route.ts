@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildPrisma } from "@/app/_utils/prisma";
 import { buildError } from "@/app/api/_utils/buildError";
 import { getCurrentUser } from "../../_utils/getCurrentUser";
-import { PutRequest } from "@/app/_types/LongVacation/PutRequest";
 import { IndexResponse } from "@/app/_types/LongVacation/Id/IndexResponse";
 
 interface Props {
@@ -10,38 +9,6 @@ interface Props {
     id: string;
   }>;
 }
-
-export const PUT = async (request: NextRequest, { params }: Props) => {
-  const prisma = await buildPrisma();
-  const { endDate, isActive, startDate, title, schoolDay }: PutRequest =
-    await request.json();
-  const { id } = await params;
-  try {
-    await getCurrentUser({ request });
-
-    await prisma.longVacation.update({
-      where: {
-        id,
-      },
-      data: {
-        title,
-        startDate,
-        endDate,
-        isActive,
-        schoolDay,
-      },
-    });
-
-    return NextResponse.json(
-      {
-        message: "updated!",
-      },
-      { status: 200 }
-    );
-  } catch (e) {
-    return buildError(e);
-  }
-};
 
 export const DELETE = async (request: NextRequest, { params }: Props) => {
   const prisma = await buildPrisma();

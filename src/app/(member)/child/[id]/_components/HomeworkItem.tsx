@@ -1,7 +1,7 @@
 "use client";
 import { useReward } from "react-rewards";
 import { Homework } from "@prisma/client";
-import { updateSubmitted } from "@/app/dashboard/_utils/updateSubmitted";
+import { updateSubmitted } from "@/app/(member)/dashboard/_utils/updateSubmitted";
 import { IndexResponse } from "@/app/_types/homework/IndexResponse";
 import { KeyedMutator } from "swr";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
