@@ -41,7 +41,25 @@ export const POST = async (request: NextRequest, { params }: Props) => {
   const { id } = await params;
   try {
     const user = await getCurrentUser({ request });
-
+    //有効に更新しようとする場合、既に有効なデータがあれば無効化する
+    if (isActive) {
+      const isActiveTrue = await prisma.longVacation.findMany({
+        where: {
+          userId: user.id,
+          childId: id,
+          isActive: true,
+        },
+      });
+      console.log(isActiveTrue);
+      if (isActiveTrue.length !== 0) {
+        await prisma.longVacation.update({
+          where: { id: isActiveTrue[0].id },
+          data: {
+            isActive: false,
+          },
+        });
+      }
+    }
     await prisma.longVacation.create({
       data: {
         userId: user.id,

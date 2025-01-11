@@ -66,7 +66,6 @@ model LongVacation {
   user        User             @relation(fields: [userId], references: [id],onDelete: Cascade)
 
   @@map("longVacations")
-  @@unique([userId,childId,isActive])
 }
 
 enum Frequency {
