@@ -1,13 +1,13 @@
 import { UseFormRegister } from "react-hook-form";
 import { LongVacationForm } from "../../_types/LongVacationForm";
 
-interface CheckboxWithLabelProps {
+interface Props {
   label: string;
   register: ReturnType<UseFormRegister<LongVacationForm>>;
   description?: string;
 }
 
-export const CheckboxWithLabel: React.FC<CheckboxWithLabelProps> = ({
+export const CheckboxWithLabel: React.FC<Props> = ({
   label,
   register,
   description,
