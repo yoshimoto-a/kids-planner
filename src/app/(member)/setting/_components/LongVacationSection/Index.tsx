@@ -6,7 +6,7 @@ import { AddModalContents } from "./AddModalContents";
 import { Table } from "./Table";
 import { LongVacation } from "@prisma/client";
 import { UpdateModalContents } from "./UpdateModalContents";
-import { ChildSelect } from "./ChildSelect";
+import { MultiChildSelect } from "./MultiChildSelect";
 import { ActiveSelect } from "./ActiveSelect";
 
 export const LongVacationSection: React.FC = () => {
@@ -14,6 +14,7 @@ export const LongVacationSection: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selected, setSelected] = useState<LongVacation | null>(null);
   const [childIds, setChildIds] = useState<string[]>([]);
+  //true→有効,false→無効,null→有効&無効(全選択)
   const [isActive, setIsActive] = useState<(boolean | null)[]>([]);
 
   const { data, error } = useLongVacation();
@@ -33,7 +34,7 @@ export const LongVacationSection: React.FC = () => {
     <>
       <div className="flex items-center justify-between">
         <div className="flex">
-          <ChildSelect childrenIds={childIds} setChildIds={setChildIds} />
+          <MultiChildSelect childrenIds={childIds} setChildIds={setChildIds} />
           <ActiveSelect isActive={isActive} setIsActive={setIsActive} />
         </div>
         <Button

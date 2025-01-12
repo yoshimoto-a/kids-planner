@@ -50,7 +50,6 @@ export const POST = async (request: NextRequest, { params }: Props) => {
           isActive: true,
         },
       });
-      console.log(isActiveTrue);
       if (isActiveTrue.length !== 0) {
         await prisma.longVacation.update({
           where: { id: isActiveTrue[0].id },

@@ -26,7 +26,7 @@ export const ActiveSelect: React.FC<Props> = ({ isActive, setIsActive }) => {
           value={
             isActive.includes(null)
               ? ["有効", "無効"]
-              : isActive.map(val => (val === true ? "有効" : "無効"))
+              : isActive.map(item => (item === true ? "有効" : "無効"))
           }
           onChange={handleChange}
         >
