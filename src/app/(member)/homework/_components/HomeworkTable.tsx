@@ -6,15 +6,15 @@ import {
 } from "@tanstack/react-table";
 import { Homework } from "@prisma/client";
 import { Button } from "@/app/_components/Button";
-import { updateSubmitted } from "../_utils/updateSubmitted";
+import { updateSubmitted } from "../../dashboard/_utils/updateSubmitted";
 import dayjs from "dayjs";
 import { KeyedMutator } from "swr";
-import { DashboardResponse } from "@/app/_types/Dashboard/Responase";
+import { IndexResponse } from "@/app/_types/homework/IndexResponse";
 
 interface Props {
   data: Homework[];
   openEditModal: (homework: Homework) => void;
-  mutate: KeyedMutator<DashboardResponse | undefined>;
+  mutate: KeyedMutator<IndexResponse | undefined>;
 }
 
 export const HomeworkTable: React.FC<Props> = ({

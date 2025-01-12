@@ -4,28 +4,28 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "@/app/_utils/api";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PutRequest } from "@/app/_types/homework/PutRequest";
 import { Homework } from "@prisma/client";
 import toast from "react-hot-toast";
 import { KeyedMutator } from "swr";
-import { DashboardResponse } from "@/app/_types/Dashboard/Responase";
-
+import { IndexResponse } from "@/app/_types/homework/IndexResponse";
+import { HomeworkForm } from "../../homework/_types/HomeworkForm";
 export const useControlHomework = (
-  mutate: KeyedMutator<DashboardResponse | undefined>
+  mutate: KeyedMutator<IndexResponse | undefined>
 ) => {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [selectedHomework, setSelectedHomework] = useState<Homework | null>(
     null
   );
+  const [longVacationId, setLongVacationId] = useState("");
+  useEffect(() => {
+    if (!selectedHomework) return;
+    setLongVacationId(selectedHomework.longVacationId || "");
+  }, [selectedHomework]);
   const schema = z.object({
     title: z.string().min(1, { message: "必須です" }),
-    dueDate: z
-      .string()
-      .min(1, { message: "必須です" })
-      .refine(str => dayjs(str, "YYYY-MM-DD", true).isValid(), {
-        message: "有効な日付を入力してください",
-      }),
+    dueDate: z.string().min(1, { message: "必須です" }),
     description: z.string().optional(),
     submitted: z.boolean().optional(),
   });
@@ -35,7 +35,7 @@ export const useControlHomework = (
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<HomeworkFormData>({
+  } = useForm<HomeworkForm>({
     resolver: zodResolver(schema),
     defaultValues: {
       title: "",
@@ -44,7 +44,6 @@ export const useControlHomework = (
       submitted: false,
     },
   });
-  type HomeworkFormData = z.infer<typeof schema>;
 
   const openEditModal = (homework: Homework) => {
     setSelectedHomework(homework);
@@ -57,7 +56,7 @@ export const useControlHomework = (
     setIsTaskModalOpen(true);
   };
 
-  const onSubmitHomework = async (data: HomeworkFormData) => {
+  const onSubmitHomework = async (data: HomeworkForm) => {
     if (!selectedHomework) return;
     try {
       await api.put<PutRequest, { message: string }>(
@@ -66,6 +65,7 @@ export const useControlHomework = (
           dueDate: new Date(data.dueDate),
           title: data.title,
           description: data.description,
+          longVacationId,
         }
       );
       mutate();
@@ -100,5 +100,8 @@ export const useControlHomework = (
     isTaskModalOpen,
     setIsTaskModalOpen,
     setSelectedHomework,
+    selectedHomework,
+    longVacationId,
+    setLongVacationId,
   };
 };

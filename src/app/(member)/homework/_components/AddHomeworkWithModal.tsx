@@ -5,49 +5,49 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "@/app/_utils/api";
 import { PostRequest } from "@/app/_types/homework/PostRequest";
 import { KeyedMutator } from "swr";
-import { DashboardResponse } from "@/app/_types/Dashboard/Responase";
 import { Modal } from "@/app/_components/Modal";
 import { Button } from "@/app/_components/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-
+import { IndexResponse } from "@/app/_types/homework/IndexResponse";
+import { HomeworkForm } from "../_types/HomeworkForm";
+import { VacationSlect } from "./VacationSlect";
+import { useLongVacation } from "../../longVacation/_hooks/useLongVacation";
 interface Props {
   childId: string;
-  mutate: KeyedMutator<DashboardResponse | undefined>;
+  mutate: KeyedMutator<IndexResponse | undefined>;
 }
-export const AddHomeworks: React.FC<Props> = ({ childId, mutate }) => {
+export const AddHomeworkWithModal: React.FC<Props> = ({ childId, mutate }) => {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const { data } = useLongVacation();
+  const [longVacationId, setLongVacationId] = useState("");
   const schema = z.object({
     title: z.string().min(1, { message: "必須です" }),
-    dueDate: z
-      .string()
-      .min(1, { message: "必須です" })
-      .transform(str => {
-        const date = new Date(str);
-        if (isNaN(date.getTime())) {
-          throw new Error("有効な日付を入力してください");
-        }
-        return date;
-      }),
+    dueDate: z.string().min(1, { message: "必須です" }),
     description: z.string().optional(),
   });
-
+  useEffect(() => {
+    if (!data) return;
+    const filtringData = data.longVacations.find(
+      item => item.childId === childId && item.isActive
+    );
+    setLongVacationId(filtringData?.id || "");
+  }, [data, setLongVacationId, childId]);
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<TaskFormData>({
+  } = useForm<HomeworkForm>({
     resolver: zodResolver(schema),
     defaultValues: {
       title: "",
-      dueDate: new Date(),
+      dueDate: "",
       description: "",
     },
   });
-  type TaskFormData = z.infer<typeof schema>;
 
-  const onSubmitHomework = async (data: TaskFormData) => {
+  const onSubmitHomework = async (data: HomeworkForm) => {
     try {
       await api.post<PostRequest, { message: string }>(
         `/api/children/${childId}`,
@@ -55,6 +55,7 @@ export const AddHomeworks: React.FC<Props> = ({ childId, mutate }) => {
           dueDate: new Date(data.dueDate),
           title: data.title,
           description: data.description,
+          longVacationId,
         }
       );
       mutate();
@@ -82,6 +83,7 @@ export const AddHomeworks: React.FC<Props> = ({ childId, mutate }) => {
         isOpen={isTaskModalOpen}
         onClose={() => {
           setIsTaskModalOpen(false);
+          reset();
         }}
       >
         <div
@@ -90,7 +92,7 @@ export const AddHomeworks: React.FC<Props> = ({ childId, mutate }) => {
         >
           <h3 className="text-xl font-bold mb-4 text-center ">宿題登録</h3>
           <form
-            className="grid grid-cols-2 gap-4"
+            className="flex flex-col gap-2"
             onSubmit={handleSubmit(onSubmitHomework)}
           >
             <div className="flex flex-col col-span-2">
@@ -121,8 +123,8 @@ export const AddHomeworks: React.FC<Props> = ({ childId, mutate }) => {
                 </p>
               )}
             </div>
-            <div className="flex flex-col">
-              <label className="font-medium">提出日:</label>
+            <div className="flex flex-col w-full">
+              <label className="font-medium">提出日</label>
               <input
                 type="date"
                 className="border rounded p-2"
@@ -134,6 +136,15 @@ export const AddHomeworks: React.FC<Props> = ({ childId, mutate }) => {
                 </p>
               )}
             </div>
+            <div>
+              <label>休暇</label>
+              <VacationSlect
+                childId={childId}
+                longVacationId={longVacationId}
+                setLongVacationId={setLongVacationId}
+              />
+            </div>
+
             <div className="col-span-2 mt-4 text-center">
               <Button type="submit" variant="bg-beige">
                 登録

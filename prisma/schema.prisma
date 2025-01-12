@@ -47,7 +47,8 @@ model Homework {
   childId     String   @map("child_id") @db.Uuid
   child       Child    @relation(fields: [childId], references: [id],onDelete: Cascade)
   user        User     @relation(fields: [userId], references: [id],onDelete: Cascade)
-
+  longVacation    LongVacation?         @relation(fields: [longVacationId], references: [id],onDelete: Cascade)
+  longVacationId  String?           @map("longVacation_id") @db.Uuid
   @@map("homeworks")
 }
 
@@ -64,7 +65,7 @@ model LongVacation {
   isActive    Boolean
   child       Child            @relation(fields: [childId], references: [id],onDelete: Cascade)
   user        User             @relation(fields: [userId], references: [id],onDelete: Cascade)
-
+  homeworks   Homework[]
   @@map("longVacations")
 }
 
