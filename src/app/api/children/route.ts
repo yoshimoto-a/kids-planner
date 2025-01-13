@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildPrisma } from "@/app/_utils/prisma";
 import { buildError } from "@/app/api/_utils/buildError";
 import { getCurrentUser } from "../_utils/getCurrentUser";
-import { PostRequest } from "@/app/_types/Child/PostRequest";
-import { IndexResponse } from "@/app/_types/Children/IndexResponse";
+import { PostRequest } from "@/app/_types/child/PostRequest";
+import { IndexResponse } from "@/app/_types/children/IndexResponse";
 export const POST = async (request: NextRequest) => {
   const prisma = await buildPrisma();
   const { name }: PostRequest = await request.json();
