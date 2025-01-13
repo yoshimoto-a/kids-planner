@@ -4,6 +4,7 @@ import { getCurrentUser } from "../_utils/getCurrentUser";
 import { IndexResponse } from "@/app/_types/homework/IndexResponse";
 import { buildError } from "../_utils/buildError";
 
+//子供一覧と宿題の一覧を返す
 export const GET = async (request: NextRequest) => {
   const prisma = await buildPrisma();
   try {

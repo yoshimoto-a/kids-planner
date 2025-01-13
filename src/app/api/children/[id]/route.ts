@@ -4,7 +4,7 @@ import { buildError } from "@/app/api/_utils/buildError";
 import { getCurrentUser } from "../../_utils/getCurrentUser";
 import { PutRequest } from "@/app/_types/Child/PutRequest";
 import { PostRequest } from "@/app/_types/homework/PostRequest";
-import { IndexResponse } from "@/app/_types/homework/IndexResponse";
+import { IndexResponse } from "@/app/_types/Children/Homework/IndexResponse";
 
 interface Props {
   params: Promise<{
@@ -99,6 +99,7 @@ export const POST = async (request: NextRequest, { params }: Props) => {
   }
 };
 
+//子供毎の宿題一覧を返す
 export const GET = async (request: NextRequest, { params }: Props) => {
   const prisma = await buildPrisma();
   const { id } = await params;
