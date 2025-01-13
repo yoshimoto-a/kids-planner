@@ -35,7 +35,7 @@ export default function ChildHomework() {
       </div>
 
       {/* 印刷用の要素 (通常表示では非表示) */}
-      <PrintArea contentRef={contentRef} childId={id as string} print />
+      <PrintArea contentRef={contentRef} childId={id as string} />
     </div>
   );
 }
