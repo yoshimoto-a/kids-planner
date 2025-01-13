@@ -12,7 +12,8 @@ interface Props {
 
 export const PUT = async (request: NextRequest, { params }: Props) => {
   const prisma = await buildPrisma();
-  const { dueDate, title, description }: PutRequest = await request.json();
+  const { dueDate, title, description, longVacationId }: PutRequest =
+    await request.json();
   const { id } = await params;
   try {
     await getCurrentUser({ request });
@@ -24,6 +25,7 @@ export const PUT = async (request: NextRequest, { params }: Props) => {
         title,
         dueDate,
         description,
+        longVacationId,
       },
     });
 
