@@ -2,28 +2,16 @@ import { RefObject } from "react";
 import { useChildHomeworks } from "../(member)/children/[id]/_hooks/useChildHomeworks";
 
 interface Props {
-  contentRef?: RefObject<HTMLDivElement | null>;
+  contentRef: RefObject<HTMLDivElement | null>;
   childId: string;
-  print?: boolean;
 }
-export const PrintArea: React.FC<Props> = ({
-  contentRef,
-  childId,
-  print = false,
-}) => {
+export const PrintArea: React.FC<Props> = ({ contentRef, childId }) => {
   const { data, error } = useChildHomeworks({ childId });
   if (!data) return <div className="text-center pt-20">読込み中...</div>;
   if (error) return <div className="text-center pt-20">エラー発生</div>;
 
   return (
-    <div
-      className={`${
-        print
-          ? "print-only hidden"
-          : "z-[9999] bg-white relative w-[630px] h-[891px]"
-      }`}
-      ref={contentRef}
-    >
+    <div className="print-only hidden" ref={contentRef}>
       <div className="p-10">
         <h2 className="text-xl mb-5">{data.child.name}の宿題一覧</h2>
         <div className="grid grid-cols-2 gap-4">
