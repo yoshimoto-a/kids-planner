@@ -30,7 +30,7 @@ export const HomeworkIndex: React.FC = () => {
           <div key={child.id} className="mb-3">
             <div className="flex justify-between items-center">
               <Link
-                href={`/child/${child.id}`}
+                href={`/children/${child.id}`}
                 className="text-lg inline cursor-pointer"
                 target="_blank"
               >
