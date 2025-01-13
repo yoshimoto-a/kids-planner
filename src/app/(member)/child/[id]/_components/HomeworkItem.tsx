@@ -31,7 +31,6 @@ export const HomeworkItem: React.FC<Props> = ({ homework, mutate }) => {
       "🐻",
       "🐼",
       "🐥",
-      "🐸",
       "🌸",
     ],
     elementCount: 100, // エフェクト量を増やす
