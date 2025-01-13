@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildPrisma } from "@/app/_utils/prisma";
 import { buildError } from "@/app/api/_utils/buildError";
 import { getCurrentUser } from "../../_utils/getCurrentUser";
-import { PutRequest } from "@/app/_types/Child/PutRequest";
+import { PutRequest } from "@/app/_types/child/PutRequest";
 import { PostRequest } from "@/app/_types/homework/PostRequest";
-import { IndexResponse } from "@/app/_types/Children/Homework/IndexResponse";
+import { IndexResponse } from "@/app/_types/children/Homework/IndexResponse";
 
 interface Props {
   params: Promise<{

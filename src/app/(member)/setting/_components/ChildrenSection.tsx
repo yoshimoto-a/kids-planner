@@ -1,7 +1,7 @@
 import { Button } from "@/app/_components/Button";
 import { Modal } from "@/app/_components/Modal";
-import { PostRequest } from "@/app/_types/Child/PostRequest";
-import { PutRequest } from "@/app/_types/Child/PutRequest";
+import { PostRequest } from "@/app/_types/child/PostRequest";
+import { PutRequest } from "@/app/_types/child/PutRequest";
 import { api } from "@/app/_utils/api";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
