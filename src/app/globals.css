@@ -21,3 +21,61 @@
     padding: 0;
   }
 }
+
+/* カレンダー */
+.fc .fc-toolbar-title {
+  font-size: 18px;
+}
+
+.fc .fc-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e79782;
+  border: 0;
+}
+.fc-next-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fc-icon {
+  display: block;
+}
+.fc-toolbar-chunk {
+  display: flex;
+}
+
+.fc .fc-button.fc-button-active {
+  background-color: #4a5e65 !important;
+}
+
+.fc-col-header-cell-cushion {
+  font-size: 10px;
+}
+.fc-col-header {
+  background-color: #e79782;
+}
+
+.fc-daygrid-day-number {
+  font-size: 10px;
+}
+
+.event-submitted {
+  background-color: gray !important;
+  color: white !important;
+  border-color: #e79782;
+}
+
+.event-group-a {
+  background-color: #d8c3a5 !important;
+  border-color: #e79782;
+}
+
+.event-group-b {
+  background-color: green !important;
+  border-color: #e79782;
+}
