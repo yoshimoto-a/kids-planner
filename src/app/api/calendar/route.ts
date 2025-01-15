@@ -4,7 +4,7 @@ import { getCurrentUser } from "../_utils/getCurrentUser";
 import { Response } from "@/app/_types/calendar/Response";
 import { buildError } from "../_utils/buildError";
 import { dayjs } from "@/app/_utils/dayjs";
-
+import { getRgbFromName } from "../_utils/getRgbFromName";
 export const GET = async (request: NextRequest) => {
   const prisma = await buildPrisma();
   try {
@@ -23,23 +23,6 @@ export const GET = async (request: NextRequest) => {
       },
     });
 
-    const getColorByChildId = (childId: string) => {
-      const colors = [
-        "rgb(135, 206, 235)", // SkyBlue
-        "rgb(255, 99, 71)", // Tomato
-        "rgb(50, 205, 50)", // LimeGreen
-        "rgb(255, 105, 180)", // HotPink
-        "rgb(255, 160, 122)", // LightSalmon
-      ];
-
-      let hash = 0;
-      for (let i = 0; i < childId.length; i++) {
-        hash = childId.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      const index = Math.abs(hash) % colors.length;
-      return colors[index];
-    };
-
     const events = homeworks.map(homework => ({
       id: homework.childId,
       groupId: homework.childId,
@@ -50,8 +33,8 @@ export const GET = async (request: NextRequest) => {
       submitted: homework.submitted,
       url: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/homework`,
       color: homework.submitted
-        ? "#808080"
-        : getColorByChildId(homework.childId),
+        ? "rgb(128, 128, 128)"
+        : getRgbFromName(homework.child.color),
     }));
 
     return NextResponse.json<Response>(
