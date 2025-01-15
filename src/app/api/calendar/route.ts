@@ -33,7 +33,7 @@ export const GET = async (request: NextRequest) => {
       submitted: homework.submitted,
       url: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/homework`,
       color: homework.submitted
-        ? "rgb(128, 128, 128)"
+        ? "#4A5E65"
         : getRgbFromName(homework.child.color),
     }));
 
