@@ -4,7 +4,7 @@ import { getCurrentUser } from "../_utils/getCurrentUser";
 import { Response } from "@/app/_types/calendar/Response";
 import { buildError } from "../_utils/buildError";
 import { dayjs } from "@/app/_utils/dayjs";
-import { getRgbFromName } from "../_utils/getRgbFromName";
+import { getColorCode } from "../_utils/getColorCode";
 export const GET = async (request: NextRequest) => {
   const prisma = await buildPrisma();
   try {
@@ -34,7 +34,7 @@ export const GET = async (request: NextRequest) => {
       url: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/homework`,
       color: homework.submitted
         ? "#4A5E65"
-        : getRgbFromName(homework.child.color),
+        : getColorCode(homework.child.color),
     }));
 
     return NextResponse.json<Response>(
