@@ -1,5 +1,5 @@
 "use client";
-import { ChildrenSection } from "./_components/ChildrenSection";
+import { ChildrenSection } from "./_components/ChildrenSection/Index";
 import { LongVacationSection } from "./_components/LongVacationSection/Index";
 import { Toaster } from "react-hot-toast";
 import { useMe } from "@/app/(member)/_hooks/useMe";

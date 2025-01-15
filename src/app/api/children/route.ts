@@ -6,7 +6,7 @@ import { PostRequest } from "@/app/_types/child/PostRequest";
 import { IndexResponse } from "@/app/_types/children/IndexResponse";
 export const POST = async (request: NextRequest) => {
   const prisma = await buildPrisma();
-  const { name }: PostRequest = await request.json();
+  const { name, color }: PostRequest = await request.json();
 
   try {
     const user = await getCurrentUser({ request });
@@ -15,6 +15,7 @@ export const POST = async (request: NextRequest) => {
       data: {
         userId: user.id,
         name,
+        color,
       },
     });
 
