@@ -3,16 +3,16 @@ import { Color } from "@prisma/client";
 export const getRgbFromName = (colorName: Color) => {
   switch (colorName) {
     case Color.RED:
-      return "rgb(255, 69, 58)";
+      return "#FF453A";
     case Color.PINK:
-      return "rgb(255, 105, 180)";
+      return "#FF69B4";
     case Color.BLUE:
-      return "rgb(30, 144, 255)";
+      return "#1E90FF";
     case Color.GREEN:
-      return "rgb(50, 205, 50)";
+      return "#32CD32";
     case Color.YELLOW:
-      return "rgb(255, 223, 0)";
+      return "#FFDF00";
     case Color.PURPLE:
-      return "rgb(138, 43, 226)";
+      return "#8A2BE2";
   }
 };
