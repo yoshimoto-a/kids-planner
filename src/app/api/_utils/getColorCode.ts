@@ -1,6 +1,6 @@
 import { Color } from "@prisma/client";
 
-export const getRgbFromName = (colorName: Color) => {
+export const getColorCode = (colorName: Color) => {
   switch (colorName) {
     case Color.RED:
       return "#FF453A";
