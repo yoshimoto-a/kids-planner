@@ -7,8 +7,8 @@ interface Props {
 }
 export const PrintArea: React.FC<Props> = ({ contentRef, childId }) => {
   const { data, error } = useChildHomeworks({ childId });
-  if (!data) return <div className="text-center pt-20">読込み中...</div>;
-  if (error) return <div className="text-center pt-20">エラー発生</div>;
+  if (!data) return;
+  if (error) return;
 
   return (
     <div className="print-only hidden" ref={contentRef}>

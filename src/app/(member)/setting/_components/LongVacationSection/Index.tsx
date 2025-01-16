@@ -8,7 +8,7 @@ import { LongVacation } from "@prisma/client";
 import { UpdateModalContents } from "./UpdateModalContents";
 import { MultiChildSelect } from "./MultiChildSelect";
 import { ActiveSelect } from "./ActiveSelect";
-
+import { SkeletonItem } from "./Skeleton";
 export const LongVacationSection: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -18,7 +18,7 @@ export const LongVacationSection: React.FC = () => {
   const [isActive, setIsActive] = useState<(boolean | null)[]>([]);
 
   const { data, error } = useLongVacation();
-  if (!data) return <div className="pt-[60px] text-center">読込み中...</div>;
+  if (!data) return <SkeletonItem />;
   if (error)
     return <div className="pt-[60px] text-center">エラー発生しました</div>;
 

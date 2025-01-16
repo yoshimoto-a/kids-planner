@@ -6,12 +6,13 @@ import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { HomeworkItem } from "./_components/HomeworkItem";
 import { PrintArea } from "../../../_components/PrintArea";
+import { SkeletonItem } from "./_components/SkeletonItem";
 export default function ChildHomework() {
   const { id } = useParams();
   const { data, error, mutate } = useChildHomeworks({ childId: id as string });
   const contentRef = useRef<HTMLDivElement | null>(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
-  if (!data) return <div className="text-center pt-20">読込み中...</div>;
+  if (!data) return <SkeletonItem />;
   if (error) return <div className="text-center pt-20">エラー発生</div>;
   return (
     <div className="max-w-[480px] mx-auto py-[72px] p-2">

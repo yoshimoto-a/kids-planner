@@ -8,6 +8,8 @@ import {
   PDFViewer,
   Font,
 } from "@react-pdf/renderer";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 import { useChildHomeworks } from "../../children/[id]/_hooks/useChildHomeworks";
 Font.register({
@@ -27,7 +29,7 @@ interface Props {
 }
 export const Pdf: React.FC<Props> = ({ childId }) => {
   const { data, error } = useChildHomeworks({ childId });
-  if (!data) return <div className="text-center pt-20">読込み中...</div>;
+  if (!data) return <Skeleton width="100%" height={300} />;
   if (error) return <div className="text-center pt-20">データ取得に失敗</div>;
   const styles = StyleSheet.create({
     page: {
