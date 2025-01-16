@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { DashboardResponse } from "@/app/_types/Dashboard/Responase";
+import { DashboardResponse, Data } from "@/app/_types/Dashboard/Responase";
 import { buildPrisma } from "@/app/_utils/prisma";
 import { buildError } from "@/app/api/_utils/buildError";
 import { getCurrentUser } from "@/app/api/_utils/getCurrentUser";
-
+import { calculateProgress } from "../_utils/calculateProgress";
 export const GET = async (request: NextRequest) => {
   const prisma = await buildPrisma();
 
@@ -12,13 +12,47 @@ export const GET = async (request: NextRequest) => {
     const homeworks = await prisma.homework.findMany({
       where: {
         userId: user.id,
+        longVacation: {
+          isActive: true,
+        },
       },
+      include: {
+        longVacation: true,
+        child: true,
+      },
+    });
+
+    const data: Data[] = Object.values(
+      homeworks.reduce<Record<string, Data>>((acc, homework) => {
+        const childId = homework.childId;
+
+        if (!acc[childId]) {
+          acc[childId] = {
+            child: {
+              id: homework.childId,
+              name: homework.child.name,
+            },
+            progress: 0,
+            homeworks: [],
+            longVacation: homework.longVacation || null,
+          };
+        }
+
+        acc[childId].homeworks.push(homework);
+
+        if (homework.longVacation) {
+          acc[childId].longVacation = homework.longVacation;
+        }
+
+        return acc;
+      }, {})
+    );
+    Object.values(data).forEach(item => {
+      item.progress = calculateProgress(item.homeworks);
     });
     return NextResponse.json<DashboardResponse>(
       {
-        user,
-        children: user.children,
-        homeworks,
+        data,
       },
       { status: 200 }
     );
