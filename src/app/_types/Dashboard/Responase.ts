@@ -4,6 +4,7 @@ export type Data = {
     id: string;
     name: string;
   };
+  progress: number;
   homeworks: Homework[];
   longVacation: LongVacation | null;
 };
