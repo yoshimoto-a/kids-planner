@@ -3,7 +3,7 @@ import { User } from "../_components/User";
 import { useDashboard } from "./_hooks/useDashboard";
 import dayjs from "dayjs";
 import { ProgressBar } from "./_components/ProgressBar";
-import Skeleton from "react-loading-skeleton";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 export default function Dashboard() {
   const { data, error } = useDashboard();
@@ -60,8 +60,10 @@ export default function Dashboard() {
           ))
         ) : (
           <div className="text-center flex flex-col gap-6">
-            <Skeleton width="98%" height={250} borderRadius={8} />
-            <Skeleton width="95%" height={250} borderRadius={8} />
+            <SkeletonTheme width="98%" height={250} borderRadius={8}>
+              <Skeleton />
+              <Skeleton />
+            </SkeletonTheme>
           </div>
         )}
       </div>

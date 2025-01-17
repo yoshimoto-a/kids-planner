@@ -1,4 +1,4 @@
-import Skeleton from "react-loading-skeleton";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 export const CalendarSkeleton: React.FC = () => {
   return (
@@ -7,10 +7,12 @@ export const CalendarSkeleton: React.FC = () => {
         <Skeleton width={30} height={30} borderRadius="50%" />
         <Skeleton width={120} height={20} />
         <div className="flex gap-2">
-          <Skeleton width={30} height={30} borderRadius="50%" />
-          <Skeleton width={30} height={30} borderRadius="50%" />
-          <Skeleton width={30} height={30} borderRadius="50%" />
-          <Skeleton width={30} height={30} borderRadius="50%" />
+          <SkeletonTheme width={30} height={30} borderRadius="50%">
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </SkeletonTheme>
         </div>
       </div>
       <div className="w-full">

@@ -1,7 +1,7 @@
 import { useChildren } from "../../../_hooks/useChildren";
 import { AddChild } from "./AddChild";
 import { EditChild } from "./EditChild";
-import Skeleton from "react-loading-skeleton";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 export const ChildrenSection: React.FC = () => {
   const { data, error } = useChildren();
@@ -16,10 +16,10 @@ export const ChildrenSection: React.FC = () => {
         {data ? (
           data.children.map(child => <EditChild key={child.id} child={child} />)
         ) : (
-          <>
-            <Skeleton width="100%" height={40} />
-            <Skeleton width="100%" height={40} />
-          </>
+          <SkeletonTheme width="100%" height={40}>
+            <Skeleton />
+            <Skeleton />
+          </SkeletonTheme>
         )}
       </div>
     </>
