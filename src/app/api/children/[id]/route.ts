@@ -111,6 +111,9 @@ export const GET = async (request: NextRequest, { params }: Props) => {
       where: {
         userId: user.id,
         childId: id,
+        longVacation: {
+          isActive: true,
+        },
       },
       include: {
         child: true,

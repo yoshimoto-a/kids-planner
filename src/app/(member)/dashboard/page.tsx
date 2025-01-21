@@ -4,11 +4,36 @@ import { useDashboard } from "./_hooks/useDashboard";
 import dayjs from "dayjs";
 import { ProgressBar } from "./_components/ProgressBar";
 import Skeleton from "react-loading-skeleton";
+import { useRouter } from "next/navigation";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Button } from "@/app/_components/Button";
+import { WorryItem } from "@/app/_components/WorryItem";
 export default function Dashboard() {
   const { data, error } = useDashboard();
-
+  const { push } = useRouter();
   if (error) return <div className="text-center pt-20">データ取得に失敗</div>;
+  if (data?.data.length == 0) {
+    return (
+      <div className="max-w-[480px] mx-auto pt-[100px] pb-[70px] px-2">
+        <div className="flex flex-col items-center gap-20">
+          <div className="w-1/2 flex justify-center">
+            <Button variant="bg-beige" onClick={() => push("/setting")}>
+              初期登録はこちら
+            </Button>
+          </div>
+          <div className="flex flex-col items-center gap-10">
+            ここには、有効な長期休暇に紐づく宿題の進捗情報が表示されます。
+            <br />
+            初期ログインではない場合は下記をご確認ください！
+            <ul>
+              <WorryItem text="有効化された長期休暇がない" />
+              <WorryItem text="有効化された長期休暇に紐づく宿題がない" />
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-[480px] mx-auto pt-[72px] pb-[70px] px-2">

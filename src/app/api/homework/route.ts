@@ -13,6 +13,9 @@ export const GET = async (request: NextRequest) => {
     const homeworks = await prisma.homework.findMany({
       where: {
         userId: user.id,
+        longVacation: {
+          isActive: true,
+        },
       },
       include: {
         child: true,
